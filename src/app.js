@@ -1,16 +1,18 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import './app.css';
+import style from './app.css';
 
 const Greeting = () => {
-  return <h1>Hello Tic Tac Toe!</h1>;
-};
+  return  <div className={style.greeting}>
+            <h1>Hello Tic Tac Toe!</h1>
+          </div>
+}
 
 function Square(props) {
   return (
     <button
-      className="square"
+      className={style.square}
       // when square is clicked, onClick of board is called (raise state)
       onClick={props.onClick}
     >
@@ -68,18 +70,18 @@ class Board extends React.Component {
 
     return (
       <div>
-        <div className="status">{status}</div>
-        <div className="board-row">
+        <div className={style.status}>{status}</div>
+        <div className={style.boardRow}>
           {this.renderSquare(0)}
           {this.renderSquare(1)}
           {this.renderSquare(2)}
         </div>
-        <div className="board-row">
+        <div className={style.boardRow}>
           {this.renderSquare(3)}
           {this.renderSquare(4)}
           {this.renderSquare(5)}
         </div>
-        <div className="board-row">
+        <div className={style.boardRow}>
           {this.renderSquare(6)}
           {this.renderSquare(7)}
           {this.renderSquare(8)}

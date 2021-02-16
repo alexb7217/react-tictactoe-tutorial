@@ -4,11 +4,14 @@ body {
   margin: 20px;
 }
 
+.greeting {
+    color: gray;
+}
 ol, ul {
   padding-left: 30px;
 }
 
-.board-row:after {
+.boardRow:after {
   clear: both;
   content: "";
   display: table;
@@ -20,7 +23,7 @@ ol, ul {
 
 .square {
   background: #fff;
-  border: 1px solid #999;
+  border: 1px solid black);
   float: left;
   font-size: 24px;
   font-weight: bold;
