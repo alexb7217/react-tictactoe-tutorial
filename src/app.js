@@ -8,26 +8,36 @@ const Greeting = () => {
 };
 
 class Square extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: null,
-    };
-  }
   render() {
     return (
-      <button className="square" 
-              onClick={() => this.setState({value: 'X'})}
+      <button
+        className="square"
+        // when square is clicked, onClick of Board is called (raise state)
+        onClick={() => this.props.onClick()}
       >
-        {this.state.value}
+        {this.props.value}
       </button>
     );
   }
 }
 
 class Board extends React.Component {
+  // lift square state to board
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null)
+    };
+  }
   renderSquare(i) {
-    return <Square value={i} />;
+    return (
+            // passing two props from board to square
+            <Square 
+              value={this.state.squares[i]}
+              // onclick event handler expecting square / button click
+              onClick={() => this.handleClick(i)}
+            />
+    );
   }
 
   render() {
