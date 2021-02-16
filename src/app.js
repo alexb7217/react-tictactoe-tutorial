@@ -33,6 +33,10 @@ class Board extends React.Component {
   handleClick(i) {
     // slice creates a copy of squares array
     const squares = this.state.squares.slice();
+    // check if winner or checked end early
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
       squares: squares,
@@ -53,7 +57,14 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: ' + (this.state.xIsNext ? 'X' : '0');
+    // do we have a winner?!
+    const winner = calculateWinner(this.state.squares);
+    let status;
+    if (winner) {
+      status = 'Winner: ' + winner;
+    } else {
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    }
 
     return (
       <div>
@@ -101,3 +112,26 @@ ReactDOM.render(
   <Game />,
   document.getElementById('root')
 );
+
+// helper function to declare winner
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    // if a is and a is equal to b and a is equal to c then b is equal to c (transitive property)
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      // return the square a which contains winner
+      return squares[a];
+    }
+  }
+  return null;
+}
