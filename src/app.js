@@ -4,9 +4,7 @@ import ReactDOM from "react-dom";
 import style from './app.css';
 
 const Greeting = () => {
-  return  <div className={style.greeting}>
-            <h1>Hello Tic Tac Toe!</h1>
-          </div>
+  return  <h1>Hello Tic Tac Toe!</h1>;
 }
 
 function Square(props) {
@@ -80,12 +78,14 @@ class Game extends React.Component {
       history: [{
         squares: Array(9).fill(null)
       }],
+      stepNumber: 0, // initialize to 0
       xIsNext: true
     };
   }
 
   handleClick(i) {
-    const history = this.state.history;
+    // there can be only one history
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
@@ -96,14 +96,33 @@ class Game extends React.Component {
       history: history.concat([{
         squares: squares
       }]),
+      stepNumber: history.length, //
       xIsNext: !this.state.xIsNext,
     });
   }
-  
+
+  jumpTo(step) {
+    this.setState({
+      stepNumber: step,
+      xIsNext: (step % 2) === 0,
+    });
+  }
+
   render() {
     const history = this.state.history;
-    const current = history[history.length - 1];
+    const current = history[this.state.stepNumber]; // whenver is now
     const winner = calculateWinner(current.squares);
+
+    const moves = history.map((step, move) => {
+      const desc = move ?
+        'Go to move #' + move :
+        'Go to game start';
+      return (
+        <li key={move}>
+          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+        </li>
+      );
+    });
 
     let status;
     if (winner) {
@@ -113,16 +132,19 @@ class Game extends React.Component {
     }
 
     return (
-      <div className="game">
-        <div className="game-board">
+      <div className={style.game}>
+        <header className={style.greeting}>
+          <Greeting />
+        </header>
+        <div className={style.gameBoard}>
           <Board
             squares={current.squares}
             onClick={(i) => this.handleClick(i)}
           />
         </div>
-        <div className="game-info">
+        <div className={style.gameInfo}>
           <div>{status}</div>
-          <ol>{/* TODO */}</ol>
+          <ol>{moves}</ol>
         </div>
       </div>
     );

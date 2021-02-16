@@ -5,7 +5,7 @@ body {
 }
 
 .greeting {
-    color: gray;
+    color: #333;
 }
 ol, ul {
   padding-left: 30px;
@@ -49,6 +49,6 @@ ol, ul {
   flex-direction: row;
 }
 
-.game-info {
+.gameInfo {
   margin-left: 20px;
 }
