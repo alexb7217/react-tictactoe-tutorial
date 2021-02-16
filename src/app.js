@@ -7,18 +7,16 @@ const Greeting = () => {
   return <h1>Hello Tic Tac Toe!</h1>;
 };
 
-class Square extends React.Component {
-  render() {
-    return (
-      <button
-        className="square"
-        // when square is clicked, onClick of Board is called (raise state)
-        onClick={() => this.props.onClick()}
-      >
-        {this.props.value}
-      </button>
-    );
-  }
+function Square(props) {
+  return (
+    <button
+      className="square"
+      // when square is clicked, onClick of board is called (raise state)
+      onClick={props.onClick}
+    >
+      {props.value}
+    </button>
+  );
 }
 
 class Board extends React.Component {
@@ -26,9 +24,23 @@ class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      squares: Array(9).fill(null)
+      squares: Array(9).fill(null),
+      // boolean initialized here?
+      xIsNext: true,
     };
   }
+
+  handleClick(i) {
+    // slice creates a copy of squares array
+    const squares = this.state.squares.slice();
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState({
+      squares: squares,
+      // toggle the xIsNext when a square is clicked
+      xIsNext: !this.state.xIsNext,
+    });
+  }
+
   renderSquare(i) {
     return (
             // passing two props from board to square
@@ -41,7 +53,7 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: X';
+    const status = 'Next player: ' + (this.state.xIsNext ? 'X' : '0');
 
     return (
       <div>
